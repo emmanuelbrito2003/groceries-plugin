@@ -1,8 +1,18 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from models import ItemPayload
 
 app = FastAPI()
+
+# Configurar CORS para permitir consumo desde múltiples orígenes
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todos los orígenes
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos (GET, POST, DELETE, etc.)
+    allow_headers=["*"],  # Permite todos los headers
+)
 
 grocery_list: dict[int, ItemPayload] = {}
 
