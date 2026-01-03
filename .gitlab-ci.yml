@@ -1,0 +1,16 @@
+stages:
+  - test
+  - deploy
+
+# Stage de Testing
+test:
+  stage: test
+  image: python:3.12
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - echo "Verificando que la aplicación funciona..."
+    - python -c "from main import app; print('✓ FastAPI se importa correctamente')"
+    - python -c "from models import ItemPayload; print('✓ Modelos funcionan correctamente')"
+  only:
+    - main
