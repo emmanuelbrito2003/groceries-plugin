@@ -16,6 +16,18 @@ app.add_middleware(
 
 grocery_list: dict[int, ItemPayload] = {}
 
+# Route para verificar que la API está funcionando
+@app.get("/")
+def root():
+    return {
+        "message": "🛒 Groceries API está funcionando!",
+        "version": "1.0.0",
+        "endpoints": {
+            "docs": "/docs",
+            "items": "/items"
+        }
+    }
+
 # Route to add an item
 @app.post("/items/{item_name}/{quantity}")
 def add_item(item_name: str, quantity: int) -> dict[str, ItemPayload]:
