@@ -15,22 +15,23 @@ test:
   only:
     - main
 
-# Stage de Deploy a Railway
+# Stage de Deploy a Render
 deploy:
   stage: deploy
   image: alpine:latest
   before_script:
-    - apk add --no-cache curl bash
-    - curl -fsSL https://railway.app/install.sh | sh
-    - export PATH="/root/.railway/bin:$PATH"
+    - apk add --no-cache curl jq
   script:
-    - echo "Desplegando a Railway..."
-    - railway link $RAILWAY_PROJECT_ID
-    - railway up --detach
-    - echo "✓ Deployment exitoso!"
-    - echo "Tu API está disponible en Railway"
+    - echo "Desplegando a Render..."
+    - |
+      curl -X POST "https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys" \
+        -H "Authorization: Bearer ${RENDER_API_KEY}" \
+        -H "Content-Type: application/json" \
+        -d '{"clearCache": "do_not_clear"}' | jq '.'
+    - echo "✓ Deployment iniciado exitosamente!"
+    - echo "Tu API está disponible en: https://groceries-plugin-5h31.onrender.com"
   only:
     - main
   environment:
     name: production
-    url: https://web-production-9d47f.up.railway.app
+    url: https://groceries-plugin-5h31.onrender.com
